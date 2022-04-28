@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,20 +7,13 @@ using Research_Gate.Models;
 
 namespace Research_Gate.Controllers
 {
-    public class HomeController : Controller
+    public class SearchController : Controller
     {
-
+        private ResearchgateDBContext dbContext = new ResearchgateDBContext();
+        // GET: Search
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
     }
 }

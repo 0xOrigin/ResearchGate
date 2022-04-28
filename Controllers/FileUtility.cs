@@ -29,5 +29,15 @@ namespace Research_Gate.Controllers
             return new StreamReader(AuthorsImagesPath + imageName);
         }
 
+        public static void StorePaperFile(string paperFile)
+        {
+            string path = PapersPath + paperFile;
+        }
+
+        public static void StoreAuthorImage(string authorImage)
+        {
+            string path = AuthorsImagesPath + authorImage;
+        }
+
     }
 }

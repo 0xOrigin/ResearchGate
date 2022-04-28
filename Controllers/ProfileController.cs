@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Research_Gate.Models;
+using Research_Gate.ViewModels;
 
 namespace Research_Gate.Controllers
 {
-    public class HomeController : Controller
+    public class ProfileController : Controller
     {
+        private AuthorPaperViewModel authorPaperViewModel = new AuthorPaperViewModel();
 
+        // GET: Profile
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Settings()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
