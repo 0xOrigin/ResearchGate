@@ -10,13 +10,10 @@ namespace Research_Gate.Models
     public partial class Comment
     {
         [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        private int Comment_id { get; set; }
+        [Required]
         public int Author_id { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required]
         public int Paper_id { get; set; }
 
         [Required]
