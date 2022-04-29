@@ -30,7 +30,7 @@ namespace Research_Gate.Models
         public string Title { get; set; }
 
         [Required]
-        public DateTime Publish_time { get; set; }
+        public DateTime Publish_date { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
