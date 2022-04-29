@@ -19,11 +19,12 @@ namespace Research_Gate.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Paper_id { get; set; }
 
+        [Required]
         public DateTime Time { get; set; }
 
         [Column("Comment")]
         [Required]
-        public string Comment1 { get; set; }
+        public string Content { get; set; }
 
         public virtual Author Author { get; set; }
 

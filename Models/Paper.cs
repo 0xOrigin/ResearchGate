@@ -25,6 +25,13 @@ namespace Research_Gate.Models
         [Required]
         public string Paper_path { get; set; }
 
+        [Required]
+        [StringLength(200)]
+        public string Title { get; set; }
+
+        [Required]
+        public DateTime Publish_time { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
 
