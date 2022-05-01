@@ -17,11 +17,6 @@ namespace Research_Gate.Controllers
             return View();
         }
 
-        public ActionResult Display()
-        {
-            return View();
-        }
-
         public ActionResult Upload()
         {
             return View();

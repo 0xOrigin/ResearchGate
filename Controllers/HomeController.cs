@@ -12,7 +12,6 @@ namespace Research_Gate.Controllers
     public class HomeController : Controller
     {
 
-        
         public ActionResult Index()
         {
 

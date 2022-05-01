@@ -17,7 +17,7 @@ namespace Research_Gate.Controllers
             return View();
         }
 
-        public ActionResult Settings()
+        public ActionResult EditProfile()
         {
             return View();
         }
