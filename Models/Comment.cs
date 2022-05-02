@@ -10,7 +10,7 @@ namespace Research_Gate.Models
     public partial class Comment
     {
         [Key]
-        private int Comment_id { get; set; }
+        public int Comment_id { get; set; }
         [Required]
         public int Author_id { get; set; }
         [Required]
