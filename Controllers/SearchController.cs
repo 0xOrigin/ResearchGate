@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.WebPages;
 using Research_Gate.Models;
 
 namespace Research_Gate.Controllers
@@ -11,17 +14,18 @@ namespace Research_Gate.Controllers
     {
         private ResearchgateDBContext dbContext = new ResearchgateDBContext();
         // GET: Search
-        private static IEnumerable<Author> authors;
+        private static IEnumerable<Author> authors = new List<Author>();
         public ActionResult Index()
         {
+            
             return View(authors);
         }
 
         [Route("Search/SearchByName/{name}")]
-        public ActionResult SearchByName(string name)
+        public IEnumerable<Author> SearchByName(string name)
         {
             authors = dbContext.Authors.Where(a => a.Fname.Equals(name)).ToList();
-            return RedirectToAction("Index");
+            return authors;
         }
 
         [Route("Search/SearchByEmail/{Email}")]
@@ -39,6 +43,12 @@ namespace Research_Gate.Controllers
         {
             authors = dbContext.Authors.Where(a => a.University.Equals(university)).ToList();
             return RedirectToAction("Index");
+        }
+
+        [Route("Search/ClearResults")]
+        public void ClearResults()
+        {
+            authors = new List<Author>();
         }
     }
 }

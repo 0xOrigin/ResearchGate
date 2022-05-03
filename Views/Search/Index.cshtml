@@ -1,7 +1,74 @@
-﻿
+﻿@model IEnumerable<Research_Gate.Models.Author>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
 }
 
-<h2>Index</h2>
+<div class="search-container">
+    <input type="text" placeholder="Write here....." name="SearchBox" id="SearchBox" class="search-textbox" />
+    <select name="SearchBySelector" id="SearchBySelector" class="SearchBySelector">
+        <option value="SearchByName" selected>Name</option>
+        <option value="SearchByEmail">Email</option>
+        <option value="SearchByUniversity">University</option>
+    </select>
+    <input type="button" name="Search" id="Submit" class="search-button" value="Search" />
+    <div class="separator"></div>
+    <div class="result-container">
+    @foreach (var author in Model)
+    {
+        <div class="result-line">
+            <a class="profile-link" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
+                <div>
+                    <span class="labels">Name:</span>
+                    <span class="values">@author.Fname @author.Lname</span>
+                    <span class="labels">Email:</span>
+                    <span class="values">@author.Email</span>
+                </div>
+                <div>
+                    <span class="labels">Department:</span>
+                    <span class="values">@author.Department</span>
+                    <span class="labels">University:</span>
+                    <span class="values">@author.University</span>
+                </div>
+            </a>
+        </div>
+    }
+    </div>
+</div>
 
+@section Scripts
+{
+    <script>
+        $("#Submit").on('click', function () {
+            $.ajax({
+                url: "/Search/" + $("#SearchBySelector").val()  + "/" + $("#SearchBox").val(),
+                type: 'POST',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    var w = window.open('/Search/Index', '_blank');
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+
+        $(window).on('beforeunload',function(){
+            $.ajax({
+                url: "/Search/ClearResults/",
+                type: 'POST',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+        
+    </script>
+   
+}

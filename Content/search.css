@@ -1,0 +1,113 @@
+﻿.search-container {
+    min-height: 550px;
+    width: 90%;
+    /* margin: auto auto; */
+    transform: translate(-3%, 4%);
+    background-color: #212325;
+    border: 2px groove black;
+    border-width: 2px 2px;
+    border-radius: 6px;
+    position: absolute;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.8);
+    cursor: default;
+}
+
+.search-textbox {
+    width: 410px;
+    height: 40px;
+    padding: 0px 15px;
+    margin: 35px auto 20px auto;
+    background-color: #3a3a3a;
+    color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: 4px;
+}
+
+.search-textbox::placeholder {
+    color: #a8a8a8;
+    font-size: 18px;
+    font-family: arial;
+}
+
+.SearchBySelector {
+        width: 120px;
+        height: 40px;
+        padding: 0px 15px;
+        margin: 35px auto 20px auto;
+        background-color: #3a3a3a;
+        color: white;
+        border-width: 2px;
+        border-style: solid;
+        border-color: white;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: 4px;
+        transition-duration: 0.5s;
+    }
+
+.separator {
+    width: 80%;
+    height: 1.2px;
+    background-color: rgb(77, 77, 77);
+    position: relative;
+    margin: auto;
+    margin-top: 15px; 
+}
+
+.search-button {
+    background-color: white;
+    color: black;
+    border: 0.5px solid #000000;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.5s;
+    cursor: pointer;
+    padding: 8px 20px;
+}
+
+.search-button:hover, .SearchBySelector:hover {
+    background-color: #000000;
+    color: white;
+}
+
+.result-container {
+    margin: 20px;
+}
+
+.result-line {
+    color: white;
+    margin: 30px auto;
+    padding: 10px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: white;
+    border-radius: 6px;
+    background-color: #1b1b1b;
+    width: 50%;
+}
+
+.profile-link {
+    text-decoration-line: none;
+    color: white;
+}
+
+.profile-link:hover , .profile-link:active {
+    color: green;
+}
+
+.labels {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.values {
+    font-size: 16px;
+}
