@@ -100,17 +100,22 @@
 
         <footer>
             <div>
-                <ul class="flex-container" >
-                    <li class="copyrights"  style="flex-grow: 9">
-                        &copy; @DateTime.Now.Year <a href="~/Home/Index" title="Research Gate">Research Gate</a> team. All
-                        rights reserved.
-                    </li>
-                    <li style="flex-grow: 1">
-                        <a href="~/Home/about" class="about" title="about" >
-                            About Us
-                        </a>
-                    </li>
-                </ul>
+
+                <table class="table caption-top">
+                    <thead style="border:none;">
+                        <tr style="border:none;">
+                            <th class="copyrights" style="border:none;">
+                                &copy; @DateTime.Now.Year <a href="~/Home/Index" title="Research Gate">Research Gate</a>. All
+                                rights reserved.
+                            </th>
+                            <th scope="col" style="border:none;">
+                                <a href="~/Home/about" class="about-btn" title="about">
+                                    About Us
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                 </table>
             </div>
         </footer>
     </div>

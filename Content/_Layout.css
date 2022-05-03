@@ -1,9 +1,14 @@
-﻿html,
+﻿* {
+    margin: 0;
+}   
+html,
 body {
     margin: 0;
     height: 100%;
 }
-
+.body-content {
+    min-height: calc(100vh - 120px);
+}
 .wrapper {
     box-sizing: border-box;
     position: relative;
@@ -25,7 +30,7 @@ nav.navbar.fixed-top {
 .dropdown-menu-dark .dropdown-item:hover,
 .navbar-dark .fa:hover,
 .copyrights a:hover,
-.about:hover {
+.about-btn:hover {
     color: #808080;
 }
 
@@ -48,9 +53,7 @@ footer ul {
 
 .copyrights {
     font-size: 16px;
-    padding: 27px 5px 20px 27px;
     color: white;
-    display: inline-block;
 }
 .copyrights a {
     font-weight: bold;
@@ -58,20 +61,8 @@ footer ul {
     color:white;
 }
 
-footer ul li {
-    display: inline;
-    text-decoration: none;
-    color: white;
-    margin: 6px 8px;
-}
-.about {
-    font-size: 16px;
-    padding: 27px 5px 20px 27px;
-    color: white;
-    display: inline-block;
+.about-btn {
     font-weight: bold;
     text-decoration: none;
     color: white;
-    float:right;
-    padding-right:100px;
 }
