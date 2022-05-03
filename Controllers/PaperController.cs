@@ -36,7 +36,7 @@ namespace Research_Gate.Controllers
             authorPaperViewModel.Paper.Like.Add(authorPaperViewModel.Author);
             dbContext.SaveChanges(); 
 
-            return Content("like added"); 
+            return View();  
         }
 
         [Route("paper/DisLike/{paperId}/{authorId}")]
@@ -49,9 +49,9 @@ namespace Research_Gate.Controllers
                 authorPaperViewModel.Paper.Like.Remove(authorPaperViewModel.Author);
 
             authorPaperViewModel.Paper.Dislike.Add(authorPaperViewModel.Author);
-            dbContext.SaveChanges(); 
+            dbContext.SaveChanges();
 
-            return Content("dislike added"); 
+            return View();  
         }
 
         [Route("paper/Comment/{paperId}/{authorId}/{comment}")]
@@ -66,9 +66,9 @@ namespace Research_Gate.Controllers
             };  
 
             dbContext.Comments.Add(c);
-            dbContext.SaveChanges(); 
+            dbContext.SaveChanges();
 
-            return Content("comment added");
+            return View(); 
         }
     }
 }
