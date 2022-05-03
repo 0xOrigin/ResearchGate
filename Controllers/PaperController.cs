@@ -36,7 +36,7 @@ namespace Research_Gate.Controllers
             authorPaperViewModel.Paper.Like.Add(authorPaperViewModel.Author);
             dbContext.SaveChanges(); 
 
-            return View();  
+            return RedirectToAction("Index");
         }
 
         [Route("paper/DisLike/{paperId}/{authorId}")]
@@ -51,7 +51,7 @@ namespace Research_Gate.Controllers
             authorPaperViewModel.Paper.Dislike.Add(authorPaperViewModel.Author);
             dbContext.SaveChanges();
 
-            return View();  
+            return RedirectToAction("Index"); 
         }
 
         [Route("paper/Comment/{paperId}/{authorId}/{comment}")]
@@ -68,7 +68,7 @@ namespace Research_Gate.Controllers
             dbContext.Comments.Add(c);
             dbContext.SaveChanges();
 
-            return View(); 
+            return RedirectToAction("Index");
         }
     }
 }
