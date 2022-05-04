@@ -1,17 +1,16 @@
 ﻿.search-container {
     min-height: 550px;
-    width: 90%;
-    /* margin: auto auto; */
-    transform: translate(-3%, 4%);
+    width: 80%;
     background-color: #212325;
     border: 2px groove black;
     border-width: 2px 2px;
     border-radius: 6px;
-    position: absolute;
+    position: relative;
     text-align: center;
     box-sizing: border-box;
     box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.8);
     cursor: default;
+    margin: 40px auto;
 }
 
 .search-textbox {
@@ -36,20 +35,24 @@
 }
 
 .SearchBySelector {
-        width: 120px;
-        height: 40px;
-        padding: 0px 15px;
-        margin: 35px auto 20px auto;
-        background-color: #3a3a3a;
-        color: white;
-        border-width: 2px;
-        border-style: solid;
-        border-color: white;
-        border-radius: 10px;
-        font-size: 14px;
-        outline: 4px;
-        transition-duration: 0.5s;
-    }
+    width: 120px;
+    height: 40px;
+    padding: 0px 15px;
+    margin: 35px auto 20px auto;
+    background-color: #3a3a3a;
+    color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: 4px;
+    transition-duration: 0.5s;
+}
+
+#SearchBySelector * {
+    border-radius: 2px;
+}
 
 .separator {
     width: 80%;
@@ -57,7 +60,7 @@
     background-color: rgb(77, 77, 77);
     position: relative;
     margin: auto;
-    margin-top: 15px; 
+    margin-top: 15px;
 }
 
 .search-button {
@@ -82,32 +85,53 @@
     margin: 20px;
 }
 
-.result-line {
+.result-box {
     color: white;
     margin: 30px auto;
-    padding: 10px;
+    padding: 10px 15px;
     border-width: 2px;
     border-style: groove;
     border-color: white;
     border-radius: 6px;
     background-color: #1b1b1b;
-    width: 50%;
+    width: 35%;
 }
 
-.profile-link {
+.profile-link-name, .profile-link-line {
     text-decoration-line: none;
+}
+
+.profile-link-name {
     color: white;
 }
 
-.profile-link:hover , .profile-link:active {
-    color: green;
+.profile-link-name:hover , .profile-link-name:active {
+    color: white;
+    text-decoration-line: underline;
+}
+
+.profile-link-line:hover, .profile-link-line:active {
+    text-decoration-line: underline;
 }
 
 .labels {
-    font-size: 20px;
-    font-weight: bold;
+    font-weight: 400;
+    color: #999;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
 }
 
 .values {
     font-size: 16px;
+    display: block;
+    margin: 2px 0px 10px 0px;
+    text-align: left;
+}
+
+.author-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 9999px;
+    float: right;
 }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Research_Gate.Models.Author>
+﻿@using Research_Gate.Controllers
+@model IEnumerable<Research_Gate.Models.Author>
 @{
     ViewBag.Title = "Search";
 }
@@ -15,21 +16,29 @@
     <div class="result-container">
     @foreach (var author in Model)
     {
-        <div class="result-line">
-            <a class="profile-link" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
-                <div>
-                    <span class="labels">Name:</span>
-                    <span class="values">@author.Fname @author.Lname</span>
-                    <span class="labels">Email:</span>
-                    <span class="values">@author.Email</span>
-                </div>
-                <div>
-                    <span class="labels">Department:</span>
-                    <span class="values">@author.Department</span>
-                    <span class="labels">University:</span>
-                    <span class="values">@author.University</span>
-                </div>
+        var path = @author.Img_path;
+        <div class="result-box">
+            <a class="profile-link-name" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
+                <img src="@Url.Content(FileUtility.GetAuthorImage(author.Img_path))" class="author-image" id="imgs" />
             </a>
+            <div>
+                <a class="profile-link-name" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                    <span class="values">@author.Fname @author.Lname</span>
+                </a>
+            </div>
+            <div>
+                <span class="labels">Institution</span>
+                <span class="values">@author.University</span>
+            </div>
+            <div>
+                <span class="labels">Department</span>
+                <span class="values">@author.Department</span>
+            </div>
+            <div>
+                <a class="profile-link-line" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                    <span class="values">View profile</span>
+                </a>
+            </div>
         </div>
     }
     </div>
@@ -39,14 +48,18 @@
 {
     <script>
         $("#Submit").on('click', function () {
+
+            var searchBoxValue = $("#SearchBox").val();
+            searchBoxValue = (searchBoxValue == '' ? 0 : searchBoxValue);
+
             $.ajax({
-                url: "/Search/" + $("#SearchBySelector").val()  + "/" + $("#SearchBox").val(),
+                url: "/Search/" + $("#SearchBySelector").val()  + "/" + searchBoxValue,
                 type: 'POST',
                 async: true,
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    var w = window.open('/Search/Index', '_blank');
+                    var w = window.open('/Search/Index', '_self');
                 },
                 error: function (xhr) {
                     alert("An error occurred: " + xhr.status + " " + xhr.statusText);
@@ -54,7 +67,7 @@
             });
         });
 
-        $(window).on('beforeunload',function(){
+        $(window).on('load',function(){
             $.ajax({
                 url: "/Search/ClearResults/",
                 type: 'POST',
@@ -70,5 +83,4 @@
         });
         
     </script>
-   
 }

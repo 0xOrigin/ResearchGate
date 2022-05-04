@@ -12,21 +12,28 @@ using Microsoft.Owin.Host.SystemWeb;
 
 namespace Research_Gate.Controllers
 {
-    public class FileUtility
+    public static class FileUtility
     {
-        private static readonly string RootPath = AppDomain.CurrentDomain.BaseDirectory + "/Files/";
+        private static readonly string RootPath = "~/Files/";
         private static readonly string PapersPath = RootPath + "Papers/";
         private static readonly string ImagesPath = RootPath + "Images/";
         private static readonly string AuthorsImagesPath = ImagesPath + "Authors/";
 
-        public static StreamReader GetPaperFile(string paperName)
+        private static readonly string DefaultAuthorImage = "profile_default.jpg";
+
+        public static string GetPaperFile(string paperName)
         {
-            return new StreamReader(PapersPath + paperName);
+            return (PapersPath + paperName);
         }
 
-        public static StreamReader GetAuthorImage(string imageName)
+        public static string GetAuthorImage(string imageName)
         {
-            return new StreamReader(AuthorsImagesPath + imageName);
+            string imagePath = AuthorsImagesPath + imageName;
+            
+            if (!File.Exists(HttpContext.Current.Server.MapPath(imagePath)))
+                imagePath = AuthorsImagesPath + DefaultAuthorImage;
+
+            return imagePath;
         }
 
         public static void StorePaperFile(string paperFile)

@@ -17,13 +17,14 @@ namespace Research_Gate.Controllers
         private static IEnumerable<Author> authors = new List<Author>();
         public ActionResult Index()
         {
-            
+
             return View(authors);
         }
 
         [Route("Search/SearchByName/{name}")]
         public IEnumerable<Author> SearchByName(string name)
         {
+            ClearResults();
             authors = dbContext.Authors.Where(a => a.Fname.Equals(name)).ToList();
             return authors;
         }
@@ -31,7 +32,7 @@ namespace Research_Gate.Controllers
         [Route("Search/SearchByEmail/{Email}")]
         public ActionResult SearchByEmail(string Email)
         {
-
+            ClearResults();
             authors = dbContext.Authors.Where(a => a.Email.Equals(Email)).ToList();
             return RedirectToAction("Index");
         }
@@ -41,6 +42,7 @@ namespace Research_Gate.Controllers
         [Route("Search/SearchByUniversity/{university}")]
         public ActionResult SearchByUniversity(string university)
         {
+            ClearResults();
             authors = dbContext.Authors.Where(a => a.University.Equals(university)).ToList();
             return RedirectToAction("Index");
         }
