@@ -55,7 +55,7 @@
                 $("#not-found").fadeOut(200);
                 $(".result-box").fadeIn(1200);
 
-            } else if (document.referrer != ''){
+            } else if (document.referrer.includes("Search/Index")){
                 $("#not-found").fadeIn(500);
             }
         });
