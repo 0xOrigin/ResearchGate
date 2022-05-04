@@ -76,9 +76,16 @@
     padding: 8px 20px;
 }
 
-.search-button:hover, .SearchBySelector:hover {
+.search-button:hover, .SearchBySelector:hover , .search-textbox:hover {
     background-color: #000000;
     color: white;
+    outline: 4px;
+    box-shadow: 0px 20px 50px 0px  rgba(0,0,0,0.8);
+}
+
+.SearchBySelector:focus, .search-textbox:focus, .search-button:focus, .result-box:focus {
+    outline: 4px;
+    box-shadow: 0px 20px 50px 0px rgba(0,0,0,0.8);
 }
 
 .result-container {
@@ -95,6 +102,12 @@
     border-radius: 6px;
     background-color: #1b1b1b;
     width: 35%;
+    display: none;
+}
+
+.result-box:hover {
+    outline: 4px;
+    box-shadow: 0px 20px 50px 0px  rgba(0,0,0,0.8);
 }
 
 .profile-link-name, .profile-link-line {
@@ -134,4 +147,18 @@
     height: 64px;
     border-radius: 9999px;
     float: right;
+}
+
+.not-found {
+    position: relative;
+    margin: 160px auto;
+    display: none;
+    color: #484848;
+    font-size: 60px;
+    -webkit-text-stroke-width: 0.2px;
+    -webkit-text-stroke-color: black;
+    text-shadow: 1px 1px black;
+    font-family: 'Patua One';
+    font-weight: bold;
+    display: none;
 }

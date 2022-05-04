@@ -5,7 +5,7 @@
 }
 
 <div class="search-container">
-    <input type="text" placeholder="Write here....." name="SearchBox" id="SearchBox" class="search-textbox" />
+    <input type="text" placeholder="Search author ........" name="SearchBox" id="SearchBox" class="search-textbox" />
     <select name="SearchBySelector" id="SearchBySelector" class="SearchBySelector">
         <option value="SearchByName" selected>Name</option>
         <option value="SearchByEmail">Email</option>
@@ -13,47 +13,60 @@
     </select>
     <input type="button" name="Search" id="Submit" class="search-button" value="Search" />
     <div class="separator"></div>
+    <h1 class="not-found" id="not-found">Not found!</h1>
     <div class="result-container">
-    @foreach (var author in Model)
-    {
-        var path = @author.Img_path;
-        <div class="result-box">
-            <a class="profile-link-name" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
-                <img src="@Url.Content(FileUtility.GetAuthorImage(author.Img_path))" class="author-image" id="imgs" />
-            </a>
-            <div>
-                <a class="profile-link-name" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
-                    <span class="values">@author.Fname @author.Lname</span>
+        @foreach (var author in Model)
+        {
+            <div class="result-box">
+                <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
+                    <img src="@Url.Content(FileUtility.GetAuthorImage(author.Img_path))" class="author-image" id="imgs" />
                 </a>
+                <div>
+                    <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                        <span class="values">@author.Fname @author.Lname</span>
+                    </a>
+                </div>
+                <div>
+                    <span class="labels">Institution</span>
+                    <span class="values">@author.University</span>
+                </div>
+                <div>
+                    <span class="labels">Department</span>
+                    <span class="values">@author.Department</span>
+                </div>
+                <div>
+                    <a class="profile-link-line" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                        <span class="values">View profile</span>
+                    </a>
+                </div>
             </div>
-            <div>
-                <span class="labels">Institution</span>
-                <span class="values">@author.University</span>
-            </div>
-            <div>
-                <span class="labels">Department</span>
-                <span class="values">@author.Department</span>
-            </div>
-            <div>
-                <a class="profile-link-line" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
-                    <span class="values">View profile</span>
-                </a>
-            </div>
-        </div>
-    }
+        }
     </div>
 </div>
 
 @section Scripts
 {
     <script>
+
+        $(document).ready(function () {
+
+            if ($(".result-box").length > 0) {
+            
+                $("#not-found").fadeOut(200);
+                $(".result-box").fadeIn(1200);
+
+            } else if (document.referrer != ''){
+                $("#not-found").fadeIn(500);
+            }
+        });
+
         $("#Submit").on('click', function () {
 
             var searchBoxValue = $("#SearchBox").val();
             searchBoxValue = (searchBoxValue == '' ? 0 : searchBoxValue);
 
             $.ajax({
-                url: "/Search/" + $("#SearchBySelector").val()  + "/" + searchBoxValue,
+                url: "/Search/" + $("#SearchBySelector").val() + "/" + searchBoxValue,
                 type: 'POST',
                 async: true,
                 cache: false,
@@ -67,7 +80,7 @@
             });
         });
 
-        $(window).on('load',function(){
+        $(window).on('load', function () {
             $.ajax({
                 url: "/Search/ClearResults/",
                 type: 'POST',
@@ -81,6 +94,6 @@
                 }
             });
         });
-        
+
     </script>
 }
