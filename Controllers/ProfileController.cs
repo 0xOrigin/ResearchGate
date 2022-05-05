@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Research_Gate.ViewModels;
+using Research_Gate.Models;
 
 namespace Research_Gate.Controllers
 {
@@ -17,6 +18,12 @@ namespace Research_Gate.Controllers
             return View();
         }
 
+        
+        public ActionResult EditProfile(Author obj)
+        {
+            return View();
+        }
+        [HttpPost]
         public ActionResult EditProfile()
         {
             return View();
