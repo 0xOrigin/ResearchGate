@@ -26,6 +26,7 @@ namespace Research_Gate
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/search.css",
+                      "~/Content/home.css",
                       "~/Content/paper.css"));
         }
     }
