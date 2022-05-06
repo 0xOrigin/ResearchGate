@@ -14,9 +14,10 @@ namespace Research_Gate.Controllers
         private ResearchgateDBContext dbContext = new ResearchgateDBContext(); 
 
         // GET: Paper
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            Paper paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
+            return View(paper);
         }
 
         public ActionResult Upload()

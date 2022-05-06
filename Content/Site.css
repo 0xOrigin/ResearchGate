@@ -45,3 +45,15 @@ textarea {
     background: rgb(63, 62, 62); 
 }
 
+.body-content {
+    padding-left: unset;
+    padding-right: unset;
+}
+
+.wrapper {
+    padding-bottom: 5.5em !important;
+}
+
+.container {
+    min-width: 90%;
+}

@@ -1,7 +1,54 @@
-﻿
+﻿@using Research_Gate.Controllers
+@using Research_Gate.Models
+@using Research_Gate.ViewModels
+@model Research_Gate.Models.Paper
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Model.Title;
 }
 
-<h2>Index</h2>
 
+<div class="paper-container">
+    
+    <div class="paper-info-container">
+        
+        <div>
+            <div class="paper-name">@Model.Title</div>
+            <div class="paper-publish-date">@Model.Publish_date.ToString("dddd, dd MMMM yyyy")</div>
+            <div class="author-labels">Authors:</div>
+        </div>
+
+        <div class="participated-authors">
+            
+            @foreach (Author author in Model.Participation)
+            {
+                <div class="author">
+                    <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                        <img src="@Url.Content(FileUtility.GetAuthorImage(author.Img_path))" class="author-img" id="imgs"/>
+                    </a>
+                    <div>
+                    <div>
+                        <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                            <span class="author-name">@author.Fname @author.Lname</span>
+                        </a>
+                    </div>
+                        <div>
+                            <span class="author-uni">@author.University</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+    
+    <div class="paper-view-container">
+        <embed class="paper-file" src="@Url.Content(FileUtility.GetPaperFile(Model.Paper_path))" title="Paper1" />
+    </div>
+   
+    <div class="paper-interactions-container">
+
+    </div>
+    
+</div>
+
+    
