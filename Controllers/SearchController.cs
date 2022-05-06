@@ -15,38 +15,48 @@ namespace Research_Gate.Controllers
         private ResearchgateDBContext dbContext = new ResearchgateDBContext();
         // GET: Search
         private static IEnumerable<Author> authors = new List<Author>();
+
+        [HttpGet]
         public ActionResult Index()
         {
 
             return View(authors);
         }
 
+        [HttpPost]
         [Route("Search/SearchByName/{name}")]
-        public IEnumerable<Author> SearchByName(string name)
+        public PartialViewResult SearchByName(string name)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.Fname.Equals(name)).ToList();
-            return authors;
+            if (name != null)
+                authors = dbContext.Authors.Where(a => (a.Fname + a.Lname).Contains(name)).ToList();
+
+            return PartialView("_Search", authors);
         }
 
+        [HttpPost]
         [Route("Search/SearchByEmail/{Email}")]
-        public ActionResult SearchByEmail(string Email)
+        public PartialViewResult SearchByEmail(string Email)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.Email.Equals(Email)).ToList();
-            return RedirectToAction("Index");
+            if(Email != null)
+                authors = dbContext.Authors.Where(a => a.Email.Contains(Email)).ToList();
+            
+            return PartialView("_Search", authors);
         }
 
-
-
+        [HttpPost]
         [Route("Search/SearchByUniversity/{university}")]
-        public ActionResult SearchByUniversity(string university)
+        public PartialViewResult SearchByUniversity(string university)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.University.Equals(university)).ToList();
-            return RedirectToAction("Index");
+            if(university != null)
+                authors = dbContext.Authors.Where(a => a.University.Contains(university)).ToList();
+            
+            return PartialView("_Search", authors);
         }
 
+        [HttpPost]
         [Route("Search/ClearResults")]
         public void ClearResults()
         {
