@@ -24,8 +24,7 @@
 
         $("#Submit").on('click', function () {
 
-            var searchBoxValue = $("#SearchBox").val();
-            searchBoxValue = (searchBoxValue === '' ? null : searchBoxValue);
+            var searchBoxValue = $("#SearchBox").val().trim();
 
             $.ajax({
                 url: "/Search/" + $("#SearchBySelector").val() + "/" + searchBoxValue,
