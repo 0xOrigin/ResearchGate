@@ -80,11 +80,16 @@ namespace Research_Gate.Controllers
             authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
             authorPaperViewModel.Author = dbContext.Authors.Where(a => a.Author_id == authorId).FirstOrDefault();
 
-            if (authorPaperViewModel.Paper.Dislike.Contains(authorPaperViewModel.Author))
-                authorPaperViewModel.Paper.Dislike.Remove(authorPaperViewModel.Author);
+            if (authorPaperViewModel.Paper.Like.Contains(authorPaperViewModel.Author))
+                authorPaperViewModel.Paper.Like.Remove(authorPaperViewModel.Author);
+            else
+            {
+                if (authorPaperViewModel.Paper.Dislike.Contains(authorPaperViewModel.Author))
+                    authorPaperViewModel.Paper.Dislike.Remove(authorPaperViewModel.Author);
 
-            authorPaperViewModel.Paper.Like.Add(authorPaperViewModel.Author);
-            dbContext.SaveChanges(); 
+                authorPaperViewModel.Paper.Like.Add(authorPaperViewModel.Author);
+            }
+            dbContext.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -95,13 +100,19 @@ namespace Research_Gate.Controllers
             authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
             authorPaperViewModel.Author = dbContext.Authors.Where(a => a.Author_id == authorId).FirstOrDefault();
 
-            if (authorPaperViewModel.Paper.Like.Contains(authorPaperViewModel.Author))
-                authorPaperViewModel.Paper.Like.Remove(authorPaperViewModel.Author);
+            if (authorPaperViewModel.Paper.Dislike.Contains(authorPaperViewModel.Author))
+                authorPaperViewModel.Paper.Dislike.Remove(authorPaperViewModel.Author);
+            else
+            {
+                if (authorPaperViewModel.Paper.Like.Contains(authorPaperViewModel.Author))
+                    authorPaperViewModel.Paper.Like.Remove(authorPaperViewModel.Author);
 
-            authorPaperViewModel.Paper.Dislike.Add(authorPaperViewModel.Author);
+                authorPaperViewModel.Paper.Dislike.Add(authorPaperViewModel.Author);
+            }
+
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
 
         [Route("paper/Comment/{paperId}/{authorId}/{comment}")]
