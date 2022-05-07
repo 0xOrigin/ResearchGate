@@ -47,7 +47,7 @@ namespace Research_Gate.Controllers
                 {
                     Publish_date = publishDate,
                     Title = title,
-                    Paper_path = "path"
+                    File = "path"
                 };
                 dbContext.Papers.Add(paper);
                 dbContext.SaveChanges();
@@ -57,7 +57,7 @@ namespace Research_Gate.Controllers
                 paperName = Controllers.FileNameGenerator.GeneratePaperName(paperId, authorsIds.First(), paperExtension);
                 path = Server.MapPath(Controllers.FileUtility.GetPaperFile(paperName));
                 file.SaveAs(path);
-                dbContext.Papers.SingleOrDefault(p => p.Paper_id == paperId).Paper_path = paperName;
+                dbContext.Papers.SingleOrDefault(p => p.Paper_id == paperId).File = paperName;
                 authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
                 foreach (int authorId in authorsIds)
                 {

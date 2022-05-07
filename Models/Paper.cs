@@ -23,7 +23,8 @@ namespace Research_Gate.Models
         public int Paper_id { get; set; }
 
         [Required]
-        public string Paper_path { get; set; }
+        [StringLength(300)]
+        public string File { get; set; }
 
         [Required]
         [StringLength(200)]
