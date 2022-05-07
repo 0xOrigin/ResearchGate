@@ -116,20 +116,51 @@ namespace Research_Gate.Controllers
         }
 
         [Route("paper/Comment/{paperId}/{authorId}/{comment}")]
-        public ActionResult Comment(int paperId , int authorId , string comment)
-        { 
+        public ActionResult Comment(int paperId, int authorId, string comment)
+        {
             DateTime dateTime = DateTime.Now;
-            Models.Comment c = new Comment() {
-                Author_id = authorId,
-                Paper_id = paperId,
-                Content = comment , 
-                Time = dateTime 
-            };  
+            if (comment != null)
+            {
+                Models.Comment c = new Comment()
+                {
+                    Author_id = authorId,
+                    Paper_id = paperId,
+                    Content = comment,
+                    Time = dateTime
+                };
 
-            dbContext.Comments.Add(c);
+                dbContext.Comments.Add(c);
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Route("paper/EditComment/{commentId}/{newComment}")]
+        public ActionResult EditComment(int commentId, string newComment)
+        {
+            DateTime dateTime = DateTime.Now;
+
+            Models.Comment editedComment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
+
+            if (newComment != null)
+            {
+                editedComment.Content = newComment;
+                editedComment.Time = dateTime;
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Route("paper/DeleteComment/{commentId}")]
+        public ActionResult DeleteComment(int commentId)
+        {
+            Models.Comment comment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
+
+            dbContext.Comments.Remove(comment);
             dbContext.SaveChanges();
 
             return RedirectToAction("Index");
         }
+
     }
 }
