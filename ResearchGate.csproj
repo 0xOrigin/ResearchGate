@@ -204,6 +204,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\paper.css" />
     <Content Include="Content\search.css" />
+    <Content Include="Content\home.css" />
     <Content Include="Content\_Layout.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
