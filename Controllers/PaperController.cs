@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,9 +21,53 @@ namespace Research_Gate.Controllers
             return View(paper);
         }
 
+        [HttpGet]
         public ActionResult Upload()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(string title, List<int> authorsIds, HttpPostedFileBase file)
+        {
+            if (ModelState.IsValid)
+            {
+                DateTime publishDate = DateTime.Now;
+                string paperName;
+                string paperExtension;
+                string path;
+                int paperId;
+
+
+                Paper paper = new Paper()
+                {
+                    Publish_date = publishDate,
+                    Title = title,
+                    Paper_path = "path"
+                };
+                dbContext.Papers.Add(paper);
+                dbContext.SaveChanges();
+
+                paperId = dbContext.Papers.ToList().Last().Paper_id;
+                paperExtension = System.IO.Path.GetExtension(file.FileName);
+                paperName = Controllers.FileNameGenerator.GeneratePaperName(paperId, authorsIds.First(), paperExtension);
+                path = Server.MapPath(Controllers.FileUtility.GetPaperFile(paperName));
+                file.SaveAs(path);
+                dbContext.Papers.SingleOrDefault(p => p.Paper_id == paperId).Paper_path = paperName;
+                authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
+                foreach (int authorId in authorsIds)
+                {
+                    authorPaperViewModel.Author = dbContext.Authors.Where(a => a.Author_id == authorId).FirstOrDefault();
+                    authorPaperViewModel.Paper.Participation.Add(authorPaperViewModel.Author);
+                }
+                dbContext.SaveChanges();
+                
+                return RedirectToAction("Index", new { id = paperId });
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [Route("paper/Like/{paperId}/{authorId}")]
