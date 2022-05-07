@@ -13,10 +13,18 @@ namespace Research_Gate.Controllers
     {
         private AuthorPaperViewModel authorPaperViewModel = new AuthorPaperViewModel();
         ResearchgateDBContext db = new ResearchgateDBContext();
+
+
         // GET: Profile
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(int? id)
         {
-            return View();
+            if (id == null)
+                return View("PageNotFound");
+
+            authorPaperViewModel.Author = db.Authors.SingleOrDefault(author => author.Author_id == id);
+            
+            return View(authorPaperViewModel);
         }
 
         public ActionResult EditProfile(int? id)

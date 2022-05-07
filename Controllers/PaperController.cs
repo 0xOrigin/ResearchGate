@@ -15,8 +15,11 @@ namespace Research_Gate.Controllers
         private ResearchgateDBContext dbContext = new ResearchgateDBContext(); 
 
         // GET: Paper
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
+            if (id == null)
+                return View("PageNotFound");
+
             Paper paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
             return View(paper);
         }
@@ -26,6 +29,7 @@ namespace Research_Gate.Controllers
         {
             return View();
         }
+
 
         [HttpPost]
         public ActionResult Upload(string title, List<int> authorsIds, HttpPostedFileBase file)

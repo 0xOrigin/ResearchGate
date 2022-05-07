@@ -170,6 +170,7 @@
     <Compile Include="Controllers\PaperController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\FileNameGenerator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +204,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\paper.css" />
+    <Content Include="Content\profile.css" />
     <Content Include="Content\search.css" />
     <Content Include="Content\home.css" />
     <Content Include="Content\_Layout.css" />
@@ -267,6 +269,7 @@
     <Content Include="Views\Paper\Upload.cshtml" />
     <Content Include="Views\Profile\EditProfile.cshtml" />
     <Content Include="Views\Shared\_Search.cshtml" />
+    <Content Include="Views\Shared\PageNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
