@@ -21,10 +21,11 @@ namespace Research_Gate.Controllers
         [HttpPost]
         public ActionResult Register(Models.Author author)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 dbContext.Authors.Add(author);
                 dbContext.SaveChanges();
+                return RedirectToAction("Login");
             }
             return View(author);
         }
@@ -34,21 +35,30 @@ namespace Research_Gate.Controllers
         {
             return View();
         }
-      
+
         [HttpPost]
-        public ActionResult Login(string email , string password)
+        public ActionResult Login(string email, string password)
         {
             if (ModelState.IsValid)
             {
                 Models.Author author = dbContext.Authors.Where(a => a.Email == email.Trim() && a.Password == password.Trim()).FirstOrDefault();
-                if(author != null)
+                if (author != null)
                 {
                     Session["id"] = author.Author_id;
                     Session["Fname"] = author.Fname;
-                    return RedirectToAction("Index", "Profile", new {id = Session["id"] });
+                    return RedirectToAction("Index", "Profile", new { id = Session["id"] });
                 }
             }
-            return View(email,password);
+            return View(email, password);
         }
+
+        public ActionResult LogOut()
+        {
+            Session.RemoveAll();
+            return RedirectToAction("Login");
+        }
+
+
     }
 }
+

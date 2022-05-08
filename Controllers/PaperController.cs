@@ -12,7 +12,7 @@ namespace Research_Gate.Controllers
     public class PaperController : Controller
     {
         private AuthorPaperViewModel authorPaperViewModel = new AuthorPaperViewModel();
-        private ResearchgateDBContext dbContext = new ResearchgateDBContext(); 
+        private ResearchgateDBContext dbContext = new ResearchgateDBContext();
 
         // GET: Paper
         public ActionResult Index(int? id)
@@ -65,7 +65,7 @@ namespace Research_Gate.Controllers
                     authorPaperViewModel.Paper.Participation.Add(authorPaperViewModel.Author);
                 }
                 dbContext.SaveChanges();
-                
+
                 return RedirectToAction("Index", new { id = paperId });
             }
             else
@@ -74,9 +74,10 @@ namespace Research_Gate.Controllers
             }
         }
 
-        [Route("paper/Like/{paperId}/{authorId}")]
-        public ActionResult Like(int paperId , int authorId)
+        [Route("paper/Like/{paperId}")]
+        public ActionResult Like(int paperId)
         {
+            int authorId = (int)Session["id"];
             authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
             authorPaperViewModel.Author = dbContext.Authors.Where(a => a.Author_id == authorId).FirstOrDefault();
 
@@ -91,12 +92,13 @@ namespace Research_Gate.Controllers
             }
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", paperId);
         }
 
-        [Route("paper/DisLike/{paperId}/{authorId}")]
-        public ActionResult DisLike(int paperId , int authorId)
+        [Route("paper/DisLike/{paperId}")]
+        public ActionResult DisLike(int paperId)
         {
+            int authorId = (int)Session["id"];
             authorPaperViewModel.Paper = dbContext.Papers.Where(p => p.Paper_id == paperId).FirstOrDefault();
             authorPaperViewModel.Author = dbContext.Authors.Where(a => a.Author_id == authorId).FirstOrDefault();
 
@@ -112,12 +114,13 @@ namespace Research_Gate.Controllers
 
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", paperId);
         }
 
-        [Route("paper/Comment/{paperId}/{authorId}/{comment}")]
-        public ActionResult Comment(int paperId, int authorId, string comment)
+        [Route("paper/Comment/{paperId}/{comment}")]
+        public ActionResult Comment(int paperId, string comment)
         {
+            int authorId = (int)Session["id"];
             DateTime dateTime = DateTime.Now;
             if (comment != null)
             {
@@ -132,7 +135,7 @@ namespace Research_Gate.Controllers
                 dbContext.Comments.Add(c);
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", paperId);
         }
 
         [Route("paper/EditComment/{commentId}/{newComment}")]
@@ -148,18 +151,18 @@ namespace Research_Gate.Controllers
                 editedComment.Time = dateTime;
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", editedComment.Paper_id);
         }
 
         [Route("paper/DeleteComment/{commentId}")]
         public ActionResult DeleteComment(int commentId)
         {
             Models.Comment comment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
-
+            int paperId = comment.Paper_id;
             dbContext.Comments.Remove(comment);
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", paperId);
         }
 
     }
