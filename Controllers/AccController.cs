@@ -11,6 +11,7 @@ namespace Research_Gate.Controllers
     {
         private ResearchgateDBContext dbContext = new ResearchgateDBContext();
         // GET: Acc
+
         [HttpGet]
         public ActionResult Register()
         {
@@ -28,13 +29,13 @@ namespace Research_Gate.Controllers
             return View(author);
         }
 
-      /*  [HttpGet]
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
-      */
-        [Route("Acc/Login/{email}/{password}")]
+      
+        [HttpPost]
         public ActionResult Login(string email , string password)
         {
             if (ModelState.IsValid)
