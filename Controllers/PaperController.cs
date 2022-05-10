@@ -20,13 +20,25 @@ namespace Research_Gate.Controllers
             if (id == null)
                 return View("PageNotFound");
 
-            Paper paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
-            return View(paper);
+            authorPaperViewModel.Paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
+            if (authorPaperViewModel.Paper == null)
+                return View("PageNotFound");
+
+            if (Session["id"] != null)
+            {
+                int authorID = (int)Session["id"];
+                authorPaperViewModel.Author = dbContext.Authors.SingleOrDefault(x => x.Author_id == authorID);
+            }
+
+            return View(authorPaperViewModel);
         }
 
         [HttpGet]
         public ActionResult Upload()
         {
+            if (Session["id"] == null)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
@@ -74,7 +86,8 @@ namespace Research_Gate.Controllers
             }
         }
 
-        [Route("paper/Like/{paperId}")]
+        [HttpPost]
+        [Route("Paper/Like/{paperId}")]
         public ActionResult Like(int paperId)
         {
             int authorId = (int)Session["id"];
@@ -92,10 +105,11 @@ namespace Research_Gate.Controllers
             }
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index", paperId);
+            return PartialView("_Likes_Dislikes", authorPaperViewModel.Paper);
         }
 
-        [Route("paper/DisLike/{paperId}")]
+        [HttpPost]
+        [Route("Paper/DisLike/{paperId}")]
         public ActionResult DisLike(int paperId)
         {
             int authorId = (int)Session["id"];
@@ -114,9 +128,10 @@ namespace Research_Gate.Controllers
 
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index", paperId);
+            return PartialView("_Likes_Dislikes", authorPaperViewModel.Paper);
         }
 
+        [HttpPost]
         [Route("paper/Comment/{paperId}/{comment}")]
         public ActionResult Comment(int paperId, string comment)
         {
@@ -138,6 +153,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", paperId);
         }
 
+        [HttpPost]
         [Route("paper/EditComment/{commentId}/{newComment}")]
         public ActionResult EditComment(int commentId, string newComment)
         {
@@ -154,6 +170,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", editedComment.Paper_id);
         }
 
+        [HttpPost]
         [Route("paper/DeleteComment/{commentId}")]
         public ActionResult DeleteComment(int commentId)
         {

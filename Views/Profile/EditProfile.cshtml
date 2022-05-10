@@ -1,45 +1,128 @@
-﻿@model  Research_Gate.ViewModels.AuthorPaperViewModel
-@using Research_Gate.Models
+﻿@using Research_Gate.Controllers
+@model Research_Gate.Models.Author
 @{
     ViewBag.Title = "Edit Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/bundles/jquery")
+<style>
+    .author-image {
+        width: 150px;
+        height: 150px;
+        float: none;
+        margin-bottom: 15px;
+    }
 
-<h2>EditProfile</h2>
+    input {
+        max-width: 100%;
+    }
+</style>
 
+<div class="edit-profile-container">
 
+    <h2 style="margin-top: 25px;">Edit profile</h2>
 
-@using (Html.BeginForm(Html.BeginForm("EditProfile", "Profile", null, FormMethod.Post, new { enctype = "multipart/form-data" })))
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>user</h4>
-        <hr />
+        <hr style="width: 100%;" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Author.Author_id)
 
+        @Html.HiddenFor(model => model.Author_id)
+
+        <div class="form-group img-group">
+            <img class="author-image" id="img" src="@Url.Content(FileUtility.GetAuthorImage(Model.Image))" />
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01">Upload image</label>
+                <input type="file" class="form-control" id="inputGroupFile01" name="file" onchange="readImg(this);">
+            </div>
+        </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Author.Fname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Author.Fname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Author.Fname, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Fname, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Fname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Fname, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Author.Lname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Author.Lname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Author.Lname, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Lname, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Lname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Lname, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
-}
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.University, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.University, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.University, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+        <div class="form-group">
+            @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "form-label" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div style="width: 100%;">
+                <input type="submit" value="Update profile" class="btn btn-light" />
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts
+{
+    <script>
+        function readImg(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }

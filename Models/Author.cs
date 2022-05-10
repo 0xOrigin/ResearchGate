@@ -43,17 +43,28 @@ namespace Research_Gate.Models
         [Required]
         [StringLength(100)]
         [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Please enter a valid E-mail address.")]
         public string Email { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [NotMapped]
+        [Required(ErrorMessage = "Confirmation Password is required.")]
+        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
+        [Display(Name = "Confirm password")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+
 
         [Required]
         [StringLength(11)]
         [Phone]
+        [RegularExpression("[0-9]+", ErrorMessage = "Please enter a valid phone number.")]
         public string Mobile { get; set; }
 
-        [Required]
         [Display(Name = "Image")]
         public string Image { get; set; }
 

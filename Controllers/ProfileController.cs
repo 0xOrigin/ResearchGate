@@ -23,23 +23,25 @@ namespace Research_Gate.Controllers
                 return View("PageNotFound");
 
             authorPaperViewModel.Author = db.Authors.SingleOrDefault(author => author.Author_id == id);
-            
+            if(authorPaperViewModel.Author == null)
+                return View("PageNotFound");
+
             return View(authorPaperViewModel);
         }
 
-        public ActionResult EditProfile(int? id)
+        public ActionResult EditProfile()
         {
-            if (id != null) {
-                var obj = db.Authors.SingleOrDefault(x => x.Author_id == id);
-                if (obj == null)
+            if (Session["id"] != null)
+            {
+                int id = (int)Session["id"];
+                Author author = db.Authors.SingleOrDefault(x => x.Author_id == id);
+
+                if (author == null)
                 {
-                    return HttpNotFound();
+                    return View("PageNotFound");
                 }
-                AuthorPaperViewModel user = new AuthorPaperViewModel
-                {
-                     Author = obj
-                };
-                return View(user);
+                
+                return View(author);
             }
             else
             {
@@ -48,33 +50,49 @@ namespace Research_Gate.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditProfile(AuthorPaperViewModel user , HttpPostedFileBase file)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(Author author , HttpPostedFileBase file)
         {
+            string authorImage = db.Authors.AsNoTracking().SingleOrDefault(x => x.Author_id == author.Author_id).Image;
+
             if (ModelState.IsValid)
             {
-                var obj = db.Authors.SingleOrDefault(x => x.Author_id == user.Author.Author_id);
-                obj.Fname = user.Author.Fname;
-                obj.Lname = user.Author.Lname;
-                obj.Password = user.Author.Password;
-                obj.Email = user.Author.Email;
-                obj.Department = user.Author.Department;
-                obj.University = user.Author.University;
-                obj.Mobile = user.Author.Mobile;
-                obj.Password = user.Author.Password;
                 if (file != null)
                 {
                     string imgExtension = System.IO.Path.GetExtension(file.FileName);
-                    string imgName = Controllers.FileNameGenerator.GenerateAuthorPhotoName(obj.Author_id, imgExtension);
-                    string path = Server.MapPath(Controllers.FileUtility.GetAuthorImage(imgName));
+                    string imgName = FileNameGenerator.GenerateAuthorPhotoName(author.Author_id, imgExtension);
+                    string path = FileUtility.GetAuthorImageStorePath(imgName);
                     file.SaveAs(path);
-                    obj.Image = imgName;
+                    DeleteImage(authorImage);
+                    author.Image = imgName;
                 }
-                db.Entry(obj).State = EntityState.Modified;
+                else
+                {
+                    author.Image = authorImage;
+                }
+
+                author.Password = EncryptPassword.Encrypt(author.Password.Trim());
+                author.ConfirmPassword = EncryptPassword.Encrypt(author.ConfirmPassword.Trim());
+
+                db.Entry(author).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Index", new { id = obj.Author_id});
+                return RedirectToAction("Index", new { id = author.Author_id});
             }
+
             return View();
+        }
+
+        private void DeleteImage(string imageName)
+        {
+            if(imageName == FileUtility.GetDefaultImageName())
+                return;
+
+            string fullPath = Request.MapPath(FileUtility.GetAuthorImageRelativePath(imageName));
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
         }
     }
 }
