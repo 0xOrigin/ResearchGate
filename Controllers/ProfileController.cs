@@ -13,10 +13,18 @@ namespace Research_Gate.Controllers
     {
         private AuthorPaperViewModel authorPaperViewModel = new AuthorPaperViewModel();
         ResearchgateDBContext db = new ResearchgateDBContext();
+
+
         // GET: Profile
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(int? id)
         {
-            return View();
+            if (id == null)
+                return View("PageNotFound");
+
+            authorPaperViewModel.Author = db.Authors.SingleOrDefault(author => author.Author_id == id);
+            
+            return View(authorPaperViewModel);
         }
 
         public ActionResult EditProfile(int? id)
@@ -55,10 +63,11 @@ namespace Research_Gate.Controllers
                 obj.Password = user.Author.Password;
                 if (file != null)
                 {
-                    string pic = System.IO.Path.GetFileName(file.FileName);
-                    string path = System.IO.Path.Combine(Server.MapPath("~/images/profiles/"), pic);
+                    string imgExtension = System.IO.Path.GetExtension(file.FileName);
+                    string imgName = Controllers.FileNameGenerator.GenerateAuthorPhotoName(obj.Author_id, imgExtension);
+                    string path = Server.MapPath(Controllers.FileUtility.GetAuthorImage(imgName));
                     file.SaveAs(path);
-                    obj.Img_path = pic;
+                    obj.Image = imgName;
                 }
                 db.Entry(obj).State = EntityState.Modified;
                 db.SaveChanges();

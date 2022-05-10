@@ -1,0 +1,107 @@
+﻿.profile-container {
+    color: white;
+    width: 85%;
+    margin: auto;
+}
+
+.profile-info-container {
+    min-height: 150px;
+    background-color: #212325;
+    border: 2px groove black;
+    border-width: 2px 2px;
+    border-radius: 6px;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.8);
+    cursor: default;
+    margin: 30px 20px 5px 20px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.profile-papers-container {
+    min-height: 400px;
+    background-color: #212325;
+    border: 2px groove black;
+    border-width: 2px 2px;
+    border-radius: 6px;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.8);
+    cursor: default;
+    margin: 0px 20px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 50px;
+}
+
+.profile-data-view {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profile-subinfo {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.edit-profile-button {
+    width: 115px;
+    border: 1px solid white;
+    border-radius: 30px;
+    height: 50px;
+    font-size: 16px;
+    display: block;
+    margin: 2px 0px 10px 0px;
+    padding-top: 10px;
+}
+
+.edit-profile-button:hover, .edit-profile-button:focus {
+    outline: 4px;
+    box-shadow: 0px 20px 35px 0px rgba(0,0,0,0.6);
+}
+
+.edit-profile-link {
+    text-decoration-line: none;
+    color: azure;
+}
+
+.publication-label {
+    font-weight: 500;
+    color: #999;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+    margin: 15px 0px;
+}
+
+.publication {
+    margin: 10px 0px;
+    
+}
+
+.paper-title-link {
+    display: block;
+    color: azure;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+    text-decoration: none;
+}
+
+.paper-title-link:hover, .paper-title-link:focus {
+    text-decoration: none;
+    color: azure;
+}

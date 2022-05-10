@@ -23,14 +23,17 @@ namespace Research_Gate.Models
 
         [Required]
         [StringLength(20)]
+        [Display(Name = "First name")]
         public string Fname { get; set; }
 
         [Required]
         [StringLength(20)]
+        [Display(Name = "Last name")]
         public string Lname { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(30)]
+        [Display(Name = "Institution")]
         public string University { get; set; }
 
         [Required]
@@ -39,6 +42,7 @@ namespace Research_Gate.Models
 
         [Required]
         [StringLength(100)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -46,10 +50,12 @@ namespace Research_Gate.Models
 
         [Required]
         [StringLength(11)]
+        [Phone]
         public string Mobile { get; set; }
 
         [Required]
-        public string Img_path { get; set; }
+        [Display(Name = "Image")]
+        public string Image { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }

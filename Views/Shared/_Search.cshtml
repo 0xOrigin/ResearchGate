@@ -1,0 +1,29 @@
+﻿@using Research_Gate.Controllers
+@model IEnumerable<Research_Gate.Models.Author>
+
+@foreach (var author in Model)
+{
+    <div class="result-box">
+        <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
+            <img src="@Url.Content(FileUtility.GetAuthorImage(author.Image))" class="author-image" id="imgs" />
+        </a>
+        <div>
+            <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                <span class="values">@author.Fname @author.Lname</span>
+            </a>
+        </div>
+        <div>
+            <span class="labels">Institution</span>
+            <span class="values">@author.University</span>
+        </div>
+        <div>
+            <span class="labels">Department</span>
+            <span class="values">@author.Department</span>
+        </div>
+        <div>
+            <a class="profile-link-line" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                <span class="values">View profile</span>
+            </a>
+        </div>
+    </div>
+}

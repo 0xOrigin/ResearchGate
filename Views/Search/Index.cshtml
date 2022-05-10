@@ -1,5 +1,4 @@
-﻿@using Research_Gate.Controllers
-@model IEnumerable<Research_Gate.Models.Author>
+﻿@using Microsoft.Ajax.Utilities
 @{
     ViewBag.Title = "Search";
 }
@@ -14,33 +13,8 @@
     <input type="button" name="Search" id="Submit" class="search-button" value="Search" />
     <div class="separator"></div>
     <h1 class="not-found" id="not-found">Not found!</h1>
-    <div class="result-container">
-        @foreach (var author in Model)
-        {
-            <div class="result-box">
-                <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
-                    <img src="@Url.Content(FileUtility.GetAuthorImage(author.Img_path))" class="author-image" id="imgs" />
-                </a>
-                <div>
-                    <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
-                        <span class="values">@author.Fname @author.Lname</span>
-                    </a>
-                </div>
-                <div>
-                    <span class="labels">Institution</span>
-                    <span class="values">@author.University</span>
-                </div>
-                <div>
-                    <span class="labels">Department</span>
-                    <span class="values">@author.Department</span>
-                </div>
-                <div>
-                    <a class="profile-link-line" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
-                        <span class="values">View profile</span>
-                    </a>
-                </div>
-            </div>
-        }
+    <div class="result-container" id="result-container">
+        
     </div>
 </div>
 
@@ -48,22 +22,9 @@
 {
     <script>
 
-        $(document).ready(function () {
-
-            if ($(".result-box").length > 0) {
-            
-                $("#not-found").fadeOut(200);
-                $(".result-box").fadeIn(1200);
-
-            } else if (document.referrer.includes("Search/Index")){
-                $("#not-found").fadeIn(500);
-            }
-        });
-
         $("#Submit").on('click', function () {
 
-            var searchBoxValue = $("#SearchBox").val();
-            searchBoxValue = (searchBoxValue == '' ? 0 : searchBoxValue);
+            var searchBoxValue = $("#SearchBox").val().trim();
 
             $.ajax({
                 url: "/Search/" + $("#SearchBySelector").val() + "/" + searchBoxValue,
@@ -71,8 +32,27 @@
                 async: true,
                 cache: false,
                 success: function (result) {
-                    console.log(result);
-                    var w = window.open('/Search/Index', '_self');
+
+                    if ($(".result-box").length > 0)
+                        $(".result-box").fadeOut(200);
+                    if ($("#not-found").attr("display") !== "none")
+                        $("#not-found").fadeOut(200);
+
+                    setTimeout(function () {
+
+                        $("#result-container").html(result);
+
+                        if ($(".result-box").length > 0) {
+            
+                            $("#not-found").fadeOut(200);
+                            $(".result-box").fadeIn(800);
+
+                        } else {
+                            $("#not-found").fadeIn(500);
+                        }
+
+                    }, 300);
+
                 },
                 error: function (xhr) {
                     alert("An error occurred: " + xhr.status + " " + xhr.statusText);

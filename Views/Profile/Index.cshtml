@@ -1,7 +1,78 @@
-﻿
+﻿@using Research_Gate.Controllers
+@using Research_Gate.Models
+@model Research_Gate.ViewModels.AuthorPaperViewModel
 @{
     ViewBag.Title = "Index";
+    Author author = Model.Author;
 }
 
-<h2>Index</h2>
+<style>
+    .wrapper {
+        padding-top: 3.5em !important;
+    }
+    .author-image {
+        width: 100px;
+        height: 100px;
+    }
+    .author-name {
+        font-size: 30px;
+        display: block;
+        margin: 2px 0px 10px 0px;
+        text-align: left;
+        font-weight: bold;
+    }
+</style>
 
+<div class="profile-container">
+
+    <div class="profile-info-container">
+
+            <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new {id = author.Author_id})">
+                <img src="@Url.Content(FileUtility.GetAuthorImage(author.Image))" class="author-image" id="imgs" />
+            </a>
+            <div>
+                <div>
+                    <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
+                        <span class="author-name">@author.Fname @author.Lname</span>
+                    </a>
+                </div>
+                <div class="profile-subinfo">
+                    <div style="margin-right: 80px;">
+                        <span class="labels">Institution</span>
+                        <span class="values">@author.University</span>
+                    </div>
+                    <div>
+                        <span class="labels">Department</span>
+                        <span class="values">@author.Department</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a class="edit-profile-link" target="_blank" href="@Url.Action("EditProfile", "Profile")">
+                    <span class="edit-profile-button">Edit profile</span>
+                </a>
+            </div>
+    </div>
+    
+    <div class="profile-papers-container">
+        <div>
+            <div class="publication-label">Publications(@author.Participation.Count):</div>
+            <hr/>
+        </div>
+        <div>
+            @foreach (Paper paper in author.Participation.AsEnumerable().OrderByDescending(x => x.Publish_date))
+            {
+                <div class="publication">
+                    <a class="paper-title-link" target="_blank" href="@Url.Action("Index", "Paper", new { id = paper.Paper_id })">
+                        <span class="paper-title-link">@paper.Title</span>
+                    </a>
+                    <div class="values">@paper.Publish_date.ToString("MMMM yyyy")</div>
+                    <a class="profile-link-line" target="_blank" href="@Url.Action("Index", "Paper", new { id = paper.Paper_id })">
+                        <span class="values">View</span>
+                    </a>
+                </div>
+                <hr/>
+            }
+        </div>
+    </div>
+</div>

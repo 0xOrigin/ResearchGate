@@ -15,38 +15,51 @@ namespace Research_Gate.Controllers
         private ResearchgateDBContext dbContext = new ResearchgateDBContext();
         // GET: Search
         private static IEnumerable<Author> authors = new List<Author>();
+
+        [HttpGet]
         public ActionResult Index()
         {
 
             return View(authors);
         }
 
-        [Route("Search/SearchByName/{name}")]
-        public IEnumerable<Author> SearchByName(string name)
+        [HttpPost]
+        [Route("Search/SearchByName/{name?}")]
+        public ActionResult SearchByName(string name)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.Fname.Equals(name)).ToList();
-            return authors;
+
+            if (name != null && name.Trim() != "")
+                authors = dbContext.Authors.Where(a => (a.Fname + a.Lname).Contains(name)).ToList();
+
+            return PartialView("_Search", authors);
         }
 
-        [Route("Search/SearchByEmail/{Email}")]
+        [HttpPost]
+        [Route("Search/SearchByEmail/{Email?}")]
         public ActionResult SearchByEmail(string Email)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.Email.Equals(Email)).ToList();
-            return RedirectToAction("Index");
+
+            if (Email != null && Email.Trim() != "")
+                authors = dbContext.Authors.Where(a => a.Email.Contains(Email)).ToList();
+            
+            return PartialView("_Search", authors);
         }
 
-
-
-        [Route("Search/SearchByUniversity/{university}")]
+        [HttpPost]
+        [Route("Search/SearchByUniversity/{university?}")]
         public ActionResult SearchByUniversity(string university)
         {
             ClearResults();
-            authors = dbContext.Authors.Where(a => a.University.Equals(university)).ToList();
-            return RedirectToAction("Index");
+
+            if (university != null && university.Trim() != "")
+                authors = dbContext.Authors.Where(a => a.University.Contains(university)).ToList();
+            
+            return PartialView("_Search", authors);
         }
 
+        [HttpPost]
         [Route("Search/ClearResults")]
         public void ClearResults()
         {
