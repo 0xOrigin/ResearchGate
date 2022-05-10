@@ -20,11 +20,17 @@ namespace Research_Gate.Controllers
             if (id == null)
                 return View("PageNotFound");
 
-            Paper paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
-            if (paper == null)
+            authorPaperViewModel.Paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
+            if (authorPaperViewModel.Paper == null)
                 return View("PageNotFound");
 
-            return View(paper);
+            if (Session["id"] != null)
+            {
+                int authorID = (int)Session["id"];
+                authorPaperViewModel.Author = dbContext.Authors.SingleOrDefault(x => x.Author_id == authorID);
+            }
+
+            return View(authorPaperViewModel);
         }
 
         [HttpGet]
@@ -81,7 +87,7 @@ namespace Research_Gate.Controllers
         }
 
         [HttpPost]
-        [Route("paper/Like/{paperId}")]
+        [Route("Paper/Like/{paperId}")]
         public ActionResult Like(int paperId)
         {
             int authorId = (int)Session["id"];
@@ -99,11 +105,11 @@ namespace Research_Gate.Controllers
             }
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index", paperId);
+            return PartialView("_Likes_Dislikes", authorPaperViewModel.Paper);
         }
 
         [HttpPost]
-        [Route("paper/DisLike/{paperId}")]
+        [Route("Paper/DisLike/{paperId}")]
         public ActionResult DisLike(int paperId)
         {
             int authorId = (int)Session["id"];
@@ -122,7 +128,7 @@ namespace Research_Gate.Controllers
 
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index", paperId);
+            return PartialView("_Likes_Dislikes", authorPaperViewModel.Paper);
         }
 
         [HttpPost]

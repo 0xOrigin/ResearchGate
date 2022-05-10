@@ -1,17 +1,23 @@
 ﻿@using Research_Gate.Controllers
 @using Research_Gate.Models
-@using Research_Gate.ViewModels
-@model Research_Gate.Models.Paper
+@model Research_Gate.ViewModels.AuthorPaperViewModel
+
 @{
-    ViewBag.Title = Model.Title;
-    Author au = Model.Participation.ToList().First();
+    ViewBag.Title = Model.Paper.Title;
+    
+    bool IsLiked = false;
+    bool IsDisLiked = false;
+    if (Session["id"] != null)
+    {
+        IsLiked = Model.Paper.Like.Count(author => author.Author_id == (int)Session["id"]) > 0;
+        IsDisLiked = Model.Paper.Dislike.Count(author => author.Author_id == (int)Session["id"]) > 0;
+    }
 }
 
 <style>
     .wrapper {
         padding-top: 3.5em !important;
     }
-    
 </style>
 
 <div class="paper-container">
@@ -19,14 +25,14 @@
     <div class="paper-info-container">
 
         <div>
-            <div class="paper-name">@Model.Title</div>
-            <div class="paper-publish-date">@Model.Publish_date.ToString("dddd, dd MMMM yyyy")</div>
+            <div class="paper-name">@Model.Paper.Title</div>
+            <div class="paper-publish-date">@Model.Paper.Publish_date.ToString("dddd, dd MMMM yyyy")</div>
             <div class="author-labels">Authors:</div>
         </div>
 
         <div class="participated-authors">
 
-            @foreach (Author author in Model.Participation)
+            @foreach (Author author in Model.Paper.Participation)
             {
                 <div class="author">
                     <a class="profile-link-name" target="_blank" href="@Url.Action("Index", "Profile", new { id = author.Author_id })">
@@ -48,7 +54,7 @@
 
     </div>
     <div class="paper-view-container">
-        <embed class="paper-file" src="@Url.Content(FileUtility.GetPaperFile(Model.File))" title="Paper1" />
+        <embed class="paper-file" src="@Url.Content(FileUtility.GetPaperFile(Model.Paper.File))" title="Paper1" />
     </div>
 
     @if (Session["id"] != null)
@@ -56,27 +62,32 @@
 
         <div class="paper-interactions-container">
 
-            <div class="like-actions">
-                <div class="like-button" id="like-button">
-                    <div class="button-style">
-                        <i class="fa fa-thumbs-up"></i>
+            <div id="likes-dislikes-box">
+
+                <div class="like-actions">
+                    <div class="like-button" id="like-button">
+                        <div class="button-style">
+                            <i id="like-symbol" class="fa fa-thumbs-up" style="color: @(IsLiked ? "blue" : "black");"></i>
+                        </div>
+                        <span class="number-of">@Model.Paper.Like.Count</span>
                     </div>
-                    <span class="number-of">0</span>
+
+                    <div class="dislike-button" id="dislike-button">
+                        <div class="button-style">
+                            <i id="dislike-symbol" class="fa fa-thumbs-down" style="color: @(IsDisLiked ? "blue" : "black");"></i>
+                        </div>
+                        <span class="number-of">@Model.Paper.Dislike.Count</span>
+                    </div>
                 </div>
 
-                <div class="dislike-button" id="dislike-button">
-                    <div class="button-style">
-                        <i class="fa fa-thumbs-down"></i>
-                    </div>
-                    <span class="number-of">0</span>
-                </div>
             </div>
+
             <hr />
 
             <div class="comment-box">
 
-                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new {id = au.Author_id})">
-                    <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" id="imgs" />
+                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new {id = Model.Author.Author_id})">
+                    <img src="@Url.Content(FileUtility.GetAuthorImage(Model.Author.Image))" class="image" id="imgs" />
                 </a>
                 <textarea id="comment-text-box"></textarea>
                 <input type="button" name="Comment" value="Comment" id="comment-button" />
@@ -89,13 +100,13 @@
                     <table>
                         <tr>
                             <td rowspan="2">
-                                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
-                                    <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" />
+                                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = Model.Author.Author_id })">
+                                    <img src="@Url.Content(FileUtility.GetAuthorImage(Model.Author.Image))" class="image" />
                                 </a>
                             </td>
                             <td>
-                                <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
-                                    <span class="comment-author-name">@au.Fname @au.Lname</span>
+                                <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = Model.Author.Author_id })">
+                                    <span class="comment-author-name">@Model.Author.Fname @Model.Author.Lname</span>
                                 </a>
                             </td>
                             <td class="comment-time">
@@ -129,13 +140,42 @@
 @section Scripts
 {
     <script>
-        $("#like-button").on('click', function () {
-            $("#like-button .button-style i").attr("style", ($("#like-button .button-style i").attr("style") === "color:blue;" ? "color:black;" : "color:blue;"));
+
+        $("#likes-dislikes-box").on('click', '#like-symbol', function () {
+            $.ajax({
+                url: "/Paper/Like/" + @Model.Paper.Paper_id,
+                type: 'POST',
+                async: true,
+                cache: false,
+                success: function (result) {
+
+                    $("#likes-dislikes-box").html(result);
+
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+            });
         });
 
 
-        $("#dislike-button").on('click', function () {
-            $("#dislike-button .button-style i").attr("style", ($("#dislike-button .button-style i").attr("style") === "color:blue;" ? "color:black;" : "color:blue;"));
-        });
+        $("#likes-dislikes-box").on('click', '#dislike-symbol', function () {
+
+                $.ajax({
+                    url: "/Paper/DisLike/" + @Model.Paper.Paper_id,
+                    type: 'POST',
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+
+                        $("#likes-dislikes-box").html(result);
+
+                    },
+                    error: function (xhr) {
+                        alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                    }
+                });
+
+            });
     </script>
 }
