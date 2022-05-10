@@ -36,14 +36,24 @@ namespace Research_Gate.Controllers
             return imagePath;
         }
 
-        public static void StorePaperFile(string paperFile)
+        public static string GetAuthorImageRelativePath(string imageName)
         {
-            string path = PapersPath + paperFile;
+            return AuthorsImagesPath + imageName; 
         }
 
-        public static void StoreAuthorImage(string authorImage)
+        public static string GetPaperFileStorePath(string paperFile)
         {
-            string path = AuthorsImagesPath + authorImage;
+            return HttpContext.Current.Server.MapPath(PapersPath + paperFile);
+        }
+
+        public static string GetAuthorImageStorePath(string authorImage)
+        {
+            return HttpContext.Current.Server.MapPath(AuthorsImagesPath + authorImage);
+        }
+
+        public static string GetDefaultImageName()
+        {
+            return DefaultAuthorImage;
         }
 
     }

@@ -14,6 +14,9 @@ namespace Research_Gate
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryajax").Include(
+                "~/Scripts/jquery.unobtrusive-ajax.min.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -29,7 +32,11 @@ namespace Research_Gate
                       "~/Content/search.css",
                       "~/Content/paper.css",
                       "~/Content/home.css",
-                      "~/Content/profile.css"));
+                      "~/Content/edit-profile.css",
+                      "~/Content/upload-paper.css",
+                      "~/Content/profile.css",
+                      "~/Content/register.css",
+                      "~/Content/login.css"));
         }
     }
 }

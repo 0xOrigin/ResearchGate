@@ -47,78 +47,84 @@
         </div>
 
     </div>
-
     <div class="paper-view-container">
         <embed class="paper-file" src="@Url.Content(FileUtility.GetPaperFile(Model.File))" title="Paper1" />
     </div>
-    
-    <div class="paper-interactions-container">
 
-        <div class="like-actions">
-            <div class="like-button" id="like-button">
-                <div class="button-style">
-                    <i class="fa fa-thumbs-up"></i>
+    @if (Session["id"] != null)
+    {
+
+        <div class="paper-interactions-container">
+
+            <div class="like-actions">
+                <div class="like-button" id="like-button">
+                    <div class="button-style">
+                        <i class="fa fa-thumbs-up"></i>
+                    </div>
+                    <span class="number-of">0</span>
                 </div>
-                <span class="number-of">0</span>
-            </div>
 
-            <div class="dislike-button" id="dislike-button">
-                <div class="button-style">
-                    <i class="fa fa-thumbs-down"></i>
+                <div class="dislike-button" id="dislike-button">
+                    <div class="button-style">
+                        <i class="fa fa-thumbs-down"></i>
+                    </div>
+                    <span class="number-of">0</span>
                 </div>
-                <span class="number-of">0</span>
+            </div>
+            <hr />
+
+            <div class="comment-box">
+
+                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new {id = au.Author_id})">
+                    <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" id="imgs" />
+                </a>
+                <textarea id="comment-text-box"></textarea>
+                <input type="button" name="Comment" value="Comment" id="comment-button" />
+
+            </div>
+            <hr />
+            <div id="comments">
+                <div class="comment">
+
+                    <table>
+                        <tr>
+                            <td rowspan="2">
+                                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
+                                    <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
+                                    <span class="comment-author-name">@au.Fname @au.Lname</span>
+                                </a>
+                            </td>
+                            <td class="comment-time">
+                                2020-01-01 10:10:10 AM
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="comment-content" contenteditable="false">Commmmmmeeeeeennnnnnnntttt</div>
+                            </td>
+                            <td class="edit-button">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </td>
+                            <td class="delete-button">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <hr />
+                </div>
             </div>
         </div>
-        <hr />
 
-        <div class="comment-box">
+    }
 
-            <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new {id = au.Author_id})">
-                <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" id="imgs" />
-            </a>
-            <textarea id="comment-text-box"></textarea>
-            <input type="button" name="Comment" value="Comment" id="comment-button" />
 
-        </div>
-        <hr />
-        <div id="comments">
-            <div class="comment">
-
-                <table>
-                    <tr>
-                        <td rowspan="2">
-                            <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
-                                <img src="@Url.Content(FileUtility.GetAuthorImage(au.Image))" class="image" />
-                            </a>
-                        </td>
-                        <td>
-                            <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = au.Author_id })">
-                                <span class="comment-author-name">@au.Fname @au.Lname</span>
-                            </a>
-                        </td>
-                        <td class="comment-time">
-                            2020-01-01 10:10:10 AM
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="comment-content" contenteditable="false">Commmmmmeeeeeennnnnnnntttt</div>
-                        </td>
-                        <td class="edit-button">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </td>
-                        <td class="delete-button">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </td>
-                    </tr>
-                </table>
-                
-                <hr />
-            </div>
-        </div>
-    </div>
- </div>
+</div>
 
 @section Scripts
 {

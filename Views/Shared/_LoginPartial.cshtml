@@ -1,12 +1,17 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿<style>
+    .dropdown-item {
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+
+@if (Session["id"] != null)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
 
         <li class="nav-item">
-            <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log off</a>
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log out</a>
         </li>
     }
 }

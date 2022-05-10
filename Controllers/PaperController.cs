@@ -21,12 +21,18 @@ namespace Research_Gate.Controllers
                 return View("PageNotFound");
 
             Paper paper = dbContext.Papers.SingleOrDefault(c => c.Paper_id == id);
+            if (paper == null)
+                return View("PageNotFound");
+
             return View(paper);
         }
 
         [HttpGet]
         public ActionResult Upload()
         {
+            if (Session["id"] == null)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
@@ -74,6 +80,7 @@ namespace Research_Gate.Controllers
             }
         }
 
+        [HttpPost]
         [Route("paper/Like/{paperId}")]
         public ActionResult Like(int paperId)
         {
@@ -95,6 +102,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", paperId);
         }
 
+        [HttpPost]
         [Route("paper/DisLike/{paperId}")]
         public ActionResult DisLike(int paperId)
         {
@@ -117,6 +125,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", paperId);
         }
 
+        [HttpPost]
         [Route("paper/Comment/{paperId}/{comment}")]
         public ActionResult Comment(int paperId, string comment)
         {
@@ -138,6 +147,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", paperId);
         }
 
+        [HttpPost]
         [Route("paper/EditComment/{commentId}/{newComment}")]
         public ActionResult EditComment(int commentId, string newComment)
         {
@@ -154,6 +164,7 @@ namespace Research_Gate.Controllers
             return RedirectToAction("Index", editedComment.Paper_id);
         }
 
+        [HttpPost]
         [Route("paper/DeleteComment/{commentId}")]
         public ActionResult DeleteComment(int commentId)
         {

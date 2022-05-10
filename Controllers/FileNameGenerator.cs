@@ -9,17 +9,28 @@ namespace Research_Gate.Controllers
     {
         public static string GenerateAuthorPhotoName(int AuthorId, string Extension)
         {
-            Random random = new Random(5);
-            int Fnumber = random.Next(1, 9);
-            int Snumber = random.Next(9);
-            string PhotoName = AuthorId.ToString() + Fnumber.ToString() + Snumber.ToString() +
-                random.Next(0000, 9999).ToString() + (AuthorId + Fnumber + Snumber).ToString() + Extension;
+            string randomNums = GenerateRandomNumbers();
+            string PhotoName = AuthorId.ToString();
+
+            for (int i = 0; i < randomNums.Length; i++)
+            {
+                PhotoName += randomNums[i];
+            }
+
+            PhotoName += (AuthorId + (int)randomNums[0] + (int)randomNums[1]).ToString() + Extension;
+
             return PhotoName;
         }
 
         public static string GeneratePaperName(int PaperId, int AuthorId, string Extension)
         {
             return PaperId.ToString() + GenerateAuthorPhotoName(AuthorId, Extension);
+        }
+
+
+        private static string GenerateRandomNumbers()
+        {
+            return new Random().Next(999999).ToString();
         }
     }
 }
