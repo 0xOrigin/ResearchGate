@@ -28,6 +28,7 @@ namespace Research_Gate.Models
 
         [Required]
         [StringLength(200)]
+        [Display(Name = "Paper Title")]
         public string Title { get; set; }
 
         [Required]

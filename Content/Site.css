@@ -44,3 +44,9 @@ textarea {
 .container {
     min-width: 90%;
 }
+
+.required-field:after {
+    content: "*";
+    color: red;
+    margin-left: 1px
+}

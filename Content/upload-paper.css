@@ -1,2 +1,30 @@
-﻿body {
+﻿.upload-paper-container {
+    min-height: 510px;
+    background-color: #212325;
+    border: 2px groove black;
+    border-width: 2px 2px;
+    border-radius: 6px;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.8);
+    cursor: default;
+    margin: 30px 20px 5px 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.chosen-container {
+    width: 100% !important;
+    text-align: left !important;
+    font-size: 15px !important;
+}
+
+.chosen-choices {
+    border-radius: 3px;
+    padding: 4px !important;
 }

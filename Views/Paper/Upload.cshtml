@@ -1,5 +1,67 @@
-﻿
+﻿@using Research_Gate.ViewModels
+@model Research_Gate.ViewModels.UploadPaperViewModel
 @{
     ViewBag.Title = "Upload paper";
 }
 
+<style>
+    input {
+        max-width: 100%;
+    }
+    .upload-form {
+        width: 50%;
+    }
+</style>
+
+<div class="upload-paper-container">
+
+    <h2 style="margin-top: 25px;">Upload Paper</h2>
+
+    @using (Html.BeginForm("Upload", "Paper", FormMethod.Post, new { enctype = "multipart/form-data" , @class="upload-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <hr style="width: 100%;" />
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Paper.Title, htmlAttributes: new { @class = "form-label required-field" })
+            <div style="width: 100%;">
+                @Html.EditorFor(model => model.Paper.Title, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Paper.File)
+
+        <div class="form-group img-group">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01">Paper</label>
+                <input type="file" accept=".pdf" class="form-control required-field" id="inputGroupFile01" name="file">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Select CO-Authors:</div>
+            <div style="width: 100%;">
+                @Html.DropDownListFor(model => model.SelectedAuthors, new MultiSelectList(UploadPaperViewModel.Authors, "Author_id", "Email"),  htmlAttributes: new { multiple = "multiple", id = "multiSelectList" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div style="width: 100%;">
+                <input type="submit" style="margin-top: 15px; width: 120px;" value="Upload" class="btn btn-light" />
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $("#multiSelectList").chosen({
+            placeholder_text_multiple: "Select participated authors"
+        });
+    </script>
+}

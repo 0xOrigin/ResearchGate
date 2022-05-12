@@ -25,6 +25,7 @@ nav.navbar.fixed-top {
     max-height: 100%;
     margin-bottom:auto;
 }
+
 .navbar-dark .navbar-nav .show > .nav-link,
 .navbar-dark .navbar-nav .nav-link:hover,
 .dropdown-menu-dark .dropdown-item:hover,

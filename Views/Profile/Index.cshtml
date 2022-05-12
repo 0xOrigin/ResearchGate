@@ -48,7 +48,7 @@
                 </div>
             </div>
         <div>
-            @if (Session["id"] != null)
+            @if (Session["id"] != null && author.Author_id == (int)Session["id"])
             {
                 <a class="edit-profile-link" href="@Url.Action("EditProfile", "Profile")">
                     <span class="edit-profile-button">Edit profile</span>
