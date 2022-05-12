@@ -93,7 +93,8 @@ namespace Research_Gate.Controllers
                 {
                     foreach (string authorId in model.SelectedAuthors)
                     {
-                        authorPaperViewModel.Author = dbContext.Authors.SingleOrDefault(a => a.Author_id == Int32.Parse(authorId));
+                        int id = Int32.Parse(authorId);
+                        authorPaperViewModel.Author = dbContext.Authors.SingleOrDefault(a => a.Author_id == id);
                         model.Paper.Participation.Add(authorPaperViewModel.Author);
                     }
                 }
