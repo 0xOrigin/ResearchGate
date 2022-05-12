@@ -264,10 +264,11 @@ hr {
 
 .edit-button {
     padding: 0px 20px;
+    cursor: pointer;
 }
 
 .delete-button {
-
+    cursor: pointer;
 }
 
 #likes-dislikes-box {

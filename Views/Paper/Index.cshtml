@@ -95,13 +95,14 @@
             </div>
             <hr />
             <div id="comments">
+
                 <div class="comment">
 
                     <table>
                         <tr>
                             <td rowspan="2">
                                 <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = Model.Author.Author_id })">
-                                    <img src="@Url.Content(FileUtility.GetAuthorImage(Model.Author.Image))" class="image" />
+                                    <img src="@Url.Content(FileUtility.GetAuthorImage(Model.Author.Image))" class="image"/>
                                 </a>
                             </td>
                             <td>
@@ -116,7 +117,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <div class="comment-content" contenteditable="false">Commmmmmeeeeeennnnnnnntttt</div>
+                                <div class="comment-content" id="comment-id-1" contenteditable="false">Commmmmmeeeeeennnnnnnntttt</div>
                             </td>
                             <td class="edit-button">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -127,7 +128,7 @@
                         </tr>
                     </table>
 
-                    <hr />
+                    <hr/>
                 </div>
             </div>
         </div>
@@ -176,6 +177,24 @@
                     }
                 });
 
+        });
+
+
+        $("#comment-button").on('click', function() {
+            $.ajax({
+                url: "/Paper/Comment/" + @Model.Paper.Paper_id + "/" + $("#comment-text-box").val(),
+                type: 'POST',
+                async: true,
+                cache: false,
+                success: function (result) {
+
+                    $("#comments").html(result);
+
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
             });
+        });
     </script>
 }
