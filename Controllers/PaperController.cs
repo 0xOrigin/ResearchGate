@@ -153,54 +153,66 @@ namespace Research_Gate.Controllers
         }
 
         [HttpPost]
-        [Route("Paper/Comment/{paperId}/{comment}")]
         public ActionResult Comment(int paperId, string comment)
         {
             int authorId = (int)Session["id"];
-            DateTime dateTime = DateTime.Now;
+
             if (comment != null)
             {
-                Models.Comment c = new Comment()
+                Comment c = new Comment()
                 {
                     Author_id = authorId,
                     Paper_id = paperId,
                     Content = comment,
-                    Time = dateTime
+                    Time = DateTime.Now,
+                    Author = dbContext.Authors.FirstOrDefault(a => a.Author_id == authorId)
                 };
 
                 dbContext.Comments.Add(c);
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("Index", paperId);
+
+            authorPaperViewModel.Paper = dbContext.Papers.SingleOrDefault(p => p.Paper_id == paperId);
+
+            IEnumerable<Comment> comments = authorPaperViewModel.Paper.Comments.OrderByDescending(c => c.Time).ToList();
+            
+            return PartialView("_Comments", comments);
         }
 
         [HttpPost]
-        [Route("Paper/EditComment/{commentId}/{newComment}")]
         public ActionResult EditComment(int commentId, string newComment)
         {
-            DateTime dateTime = DateTime.Now;
+            Comment editedComment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
 
-            Models.Comment editedComment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
-
-            if (newComment != null)
+            if (newComment != null && newComment != editedComment.Content)
             {
                 editedComment.Content = newComment;
-                editedComment.Time = dateTime;
+                editedComment.Time = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("Index", editedComment.Paper_id);
+
+            authorPaperViewModel.Paper = dbContext.Papers.SingleOrDefault(p => p.Paper_id == editedComment.Paper_id);
+
+            IEnumerable<Comment> comments = authorPaperViewModel.Paper.Comments.OrderByDescending(c => c.Time).ToList();
+
+            return PartialView("_Comments", comments);
         }
 
         [HttpPost]
         [Route("Paper/DeleteComment/{commentId}")]
         public ActionResult DeleteComment(int commentId)
         {
-            Models.Comment comment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
+            Comment comment = dbContext.Comments.Where(c => c.Comment_id == commentId).FirstOrDefault();
+
             int paperId = comment.Paper_id;
             dbContext.Comments.Remove(comment);
             dbContext.SaveChanges();
 
-            return RedirectToAction("Index", paperId);
+            authorPaperViewModel.Paper = dbContext.Papers.SingleOrDefault(p => p.Paper_id == paperId);
+
+            IEnumerable<Comment> comments = authorPaperViewModel.Paper.Comments.OrderByDescending(c => c.Time).ToList();
+
+            return PartialView("_Comments", comments);
         }
 
     }

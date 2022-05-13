@@ -1,2 +1,49 @@
-﻿@model Research_Gate.Models.Paper
-    
+﻿@using Research_Gate.Controllers
+@using Research_Gate.Models
+@model IEnumerable<Research_Gate.Models.Comment>
+
+@{
+    int authorId = (int)Session["id"];
+}
+
+@foreach (Comment comment in Model)
+{
+    <div class="comment">
+        <table>
+            <tr>
+                <td rowspan="2" class="fixed-img">
+                    <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = comment.Author.Author_id })">
+                        <img src="@Url.Content(FileUtility.GetAuthorImage(comment.Author.Image))" class="image"/>
+                    </a>
+                </td>
+                <td>
+                    <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = comment.Author.Author_id })">
+                        <span class="comment-author-name">@comment.Author.Fname @comment.Author.Lname</span>
+                    </a>
+                </td>
+                <td class="comment-time">
+                    @comment.Time
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="comment-content" id="comment-id-@comment.Comment_id" contenteditable="false">@comment.Content</div>
+                </td>
+                @if (authorId == comment.Author.Author_id)
+                {
+                    <td class="edit-button @comment.Comment_id">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <div class="update-button @comment.Comment_id" id="update-button-@comment.Comment_id">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                    </td>
+                                    
+                    <td class="delete-button @comment.Comment_id">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </td>
+                }
+            </tr>
+        </table>
+        <hr/>
+    </div>
+}

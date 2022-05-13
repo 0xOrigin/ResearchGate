@@ -4,13 +4,21 @@
 
 @{
     ViewBag.Title = Model.Paper.Title;
-    
+
     bool IsLiked = false;
     bool IsDisLiked = false;
+    IEnumerable<Comment> comments = new List<Comment>();
+
+    int authorID = 0;
+
     if (Session["id"] != null)
     {
-        IsLiked = Model.Paper.Like.Count(author => author.Author_id == (int)Session["id"]) > 0;
-        IsDisLiked = Model.Paper.Dislike.Count(author => author.Author_id == (int)Session["id"]) > 0;
+        authorID = (int)Session["id"];
+
+        IsLiked = Model.Paper.Like.Count(author => author.Author_id == authorID) > 0;
+        IsDisLiked = Model.Paper.Dislike.Count(author => author.Author_id == authorID) > 0;
+
+        comments = Model.Paper.Comments.OrderByDescending(c => c.Time).ToList();
     }
 }
 
@@ -59,7 +67,6 @@
 
     @if (Session["id"] != null)
     {
-
         <div class="paper-interactions-container">
 
             <div id="likes-dislikes-box">
@@ -96,45 +103,52 @@
             <hr />
             <div id="comments">
 
-                <div class="comment">
+                @foreach (Comment comment in comments)
+                {
+                    <div class="comment">
+                        <table>
+                            <tr>
+                                <td rowspan="2" class="fixed-img">
+                                    <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = comment.Author.Author_id })">
+                                        <img src="@Url.Content(FileUtility.GetAuthorImage(comment.Author.Image))" class="image" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = comment.Author.Author_id })">
+                                        <span class="comment-author-name">@comment.Author.Fname @comment.Author.Lname</span>
+                                    </a>
+                                </td>
+                                <td class="comment-time">
+                                    @comment.Time
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="comment-content" id="comment-id-@comment.Comment_id" contenteditable="false">@comment.Content</div>
+                                </td>
+                                @if (authorID == comment.Author.Author_id)
+                                {
+                                    <td class="edit-button @comment.Comment_id">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <div class="update-button @comment.Comment_id" id="update-button-@comment.Comment_id">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="delete-button @comment.Comment_id">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </td>
+                                }
+                            </tr>
+                        </table>
+                        <hr />
+                    </div>
+                }
 
-                    <table>
-                        <tr>
-                            <td rowspan="2">
-                                <a class="profile-link-name" style="margin-right: 10px;" target="_blank" href="@Url.Action("Index", "Profile", new { id = Model.Author.Author_id })">
-                                    <img src="@Url.Content(FileUtility.GetAuthorImage(Model.Author.Image))" class="image"/>
-                                </a>
-                            </td>
-                            <td>
-                                <a class="profile-link-name" style="margin-right: 10px; display: block;" target="_blank" href="@Url.Action("Index", "Profile", new { id = Model.Author.Author_id })">
-                                    <span class="comment-author-name">@Model.Author.Fname @Model.Author.Lname</span>
-                                </a>
-                            </td>
-                            <td class="comment-time">
-                                2020-01-01 10:10:10 AM
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <div class="comment-content" id="comment-id-1" contenteditable="false">Commmmmmeeeeeennnnnnnntttt</div>
-                            </td>
-                            <td class="edit-button">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            </td>
-                            <td class="delete-button">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <hr/>
-                </div>
             </div>
         </div>
 
     }
-
 
 </div>
 
@@ -182,10 +196,68 @@
 
         $("#comment-button").on('click', function() {
             $.ajax({
-                url: "/Paper/Comment/" + @Model.Paper.Paper_id + "/" + $("#comment-text-box").val(),
+                url: "/Paper/Comment",
                 type: 'POST',
                 async: true,
                 cache: false,
+                dataType: "text",
+                data: { 'paperId': @Model.Paper.Paper_id, 'comment': $("#comment-text-box").val()},
+                success: function (result) {
+
+                    $("#comments").html(result);
+
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+
+
+        $("#comments").on('click', '.delete-button', function() {
+            $.ajax({
+                url: "/Paper/DeleteComment/" + $(this).attr("class").split(' ')[1],
+                type: 'POST',
+                async: true,
+                cache: false,
+                success: function (result) {
+
+                    $("#comments").html(result);
+
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+
+        $("#comments").on('click', '.edit-button', function () {
+            var commentID = $(this).attr("class").split(' ')[1];
+            if ($("#comment-id-" + commentID).attr("contenteditable") == "false") {
+
+                $("#comment-id-" + commentID).attr("contenteditable", "true");
+                $("#comment-id-" + commentID).focus();
+
+                $("#update-button-" + commentID).attr("style", "display: block;");
+
+            } else {
+                $("#comment-id-" + commentID).attr("contenteditable", "false");
+                $("#update-button-" + commentID).attr("style", "display: none;");
+            }
+        });
+
+        $("#comments").on('click', '.update-button', function () {
+
+            var commentID = $(this).attr("class").split(' ')[1];
+            $("#update-button-" + commentID).attr("style", "display: none;");
+
+            $.ajax({
+                url: "/Paper/EditComment",
+                type: 'POST',
+                async: true,
+                cache: false,
+                dataType: "text",
+                data: { 'commentId': commentID, 'newComment': $("#comment-id-" + commentID).text() },
                 success: function (result) {
 
                     $("#comments").html(result);
