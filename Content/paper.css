@@ -25,7 +25,7 @@
     margin: 15px auto;
     font-weight: 900;
     font-family: "Times New Roman", Times, serif;
-    font-size: 28px;
+    font-size: 27px;
 }
 
 .paper-publish-date {
@@ -192,7 +192,7 @@
 }
 
 hr {
-    width: 410px;
+    /*width: 410px;*/
     color: whitesmoke;
 }
 
